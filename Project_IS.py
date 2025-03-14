@@ -216,7 +216,7 @@ model_n.fit(X_train_n, y_train_n)
 
 # UI Streamlit
 st.sidebar.title("Project IS")
-page = st.sidebar.radio("ไปยังหน้า:", ["Machine Learning", "Neural Network", "Demo Machine Learning", "Neural Network"])
+page = st.sidebar.radio("ไปยังหน้า:", ["Machine Learning", "Neural Network", "Demo Machine Learning", "Demo Neural Network"])
 
 if page == "Machine Learning":
     data_preparation_and_algorithm_theory()
