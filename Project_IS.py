@@ -1,5 +1,6 @@
 import streamlit as st
 from sklearn.linear_model import LogisticRegression
+import pandas
 
 #หน้าที่3
 from sklearn.model_selection import train_test_split
@@ -77,7 +78,7 @@ def data_preparation_and_algorithm_theory():
     - **SVC ใช้สร้างโมเดล** Support Vector Machine (SVM)
     - **classification_report** และ **accuracy_score** ใช้ประเมินผลโมเดล
     """)
-    st.image("PhotoML/1.png", use_column_width=True)
+    st.image("PhotoML/1.png", use_container_width=True)
     st.write("""
     2. **โหลดชุดข้อมูล**
     - โหลดข้อมูลจากไฟล์ **nutrition.csv**
@@ -85,7 +86,7 @@ def data_preparation_and_algorithm_theory():
     - แสดงข้อมูลเบื้องต้น **(info())** เช่น จำนวนแถว คอลัมน์ และประเภทข้อมูล
     - แสดงชื่อคอลัมน์ทั้งหมด **(columns)**
     """)
-    st.image("PhotoML/2.png", use_column_width=True)
+    st.image("PhotoML/2.png", use_container_width=True)
     st.write("""
     3. **แปลง Label เป็นตัวเลข**
     - คอลัมน์ 'label' เป็นประเภท (Category)
@@ -94,31 +95,31 @@ def data_preparation_and_algorithm_theory():
         - Banana → 1
         - Carrot → 2
     """)
-    st.image("PhotoML/3.png", use_column_width=True)
+    st.image("PhotoML/3.png", use_container_width=True)
     st.write("""
     4. **แยก Features (X) และ Labels (y)**
     - X คือข้อมูลที่ใช้ในการพยากรณ์ (Features) (ไม่รวม 'label')
     - y คือค่าที่ต้องการพยากรณ์ (Target Variable)
     """)
-    st.image("PhotoML/4.png", use_column_width=True)
+    st.image("PhotoML/4.png", use_container_width=True)
     st.write("""
       **ตรวจสอบข้อมูล**
     - เช็คค่าที่เป็นไปได้ของ label
     - ตรวจสอบประเภทข้อมูลทั้งหมด
     """)
-    st.image("PhotoML/4.1.png", use_column_width=True)
+    st.image("PhotoML/4.1.png", use_container_width=True)
     st.write("""
     5. **แบ่งข้อมูลเป็น Training และ Test Set**
     - แบ่งข้อมูล 80% เป็น Training Set และ 20% เป็น Test Set
     - random_state=42 ทำให้ได้ผลลัพธ์เดิมทุกครั้ง
     """)
-    st.image("PhotoML/5.png", use_column_width=True)
+    st.image("PhotoML/5.png", use_container_width=True)
     st.write("""
     6. **ปรับมาตรฐานข้อมูล (Feature Scaling)**
     - ใช้ StandardScaler เพื่อปรับค่าคุณลักษณะ (Features) ให้มีค่าเฉลี่ย = 0 และค่าความแปรปรวน = 1
     - ช่วยให้โมเดลทำงานได้ดีขึ้น
     """)
-    st.image("PhotoML/6.png", use_column_width=True)
+    st.image("PhotoML/6.png", use_container_width=True)
     st.write("""
     7. **สร้างและฝึกโมเดล SVM**
     - ใช้ Support Vector Classifier (SVC)
@@ -126,18 +127,18 @@ def data_preparation_and_algorithm_theory():
     - C=1 → ควบคุมความเข้มงวดของขอบเขตการจำแนก
     - fit(X_train, y_train) → ฝึกโมเดลด้วย Training Data
     """)
-    st.image("PhotoML/7.png", use_column_width=True)
+    st.image("PhotoML/7.png", use_container_width=True)
     st.write("""
     8. **ทดสอบโมเดล**
     - ใช้ X_test เพื่อให้โมเดลพยากรณ์ค่า y
     """)
-    st.image("PhotoML/8.png", use_column_width=True)
+    st.image("PhotoML/8.png", use_container_width=True)
     st.write("""
     9. **ประเมินผล**
     - Accuracy Score → คำนวณความแม่นยำของโมเดล
     - Classification Report → แสดงค่าต่าง ๆ เช่น Precision, Recall, F1-score
     """)
-    st.image("PhotoML/9.png", use_column_width=True)
+    st.image("PhotoML/9.png", use_container_width=True)
 
 # หน้าที่ 2: อธิบายการพัฒนาโมเดล Machine Learning และ Neural Networks
 def model_development():
