@@ -188,13 +188,72 @@ def model_development():
     st.write("""
     จุดมุ่งหมายของโมเดลนี้คือการนำ Neural Network พยากรความเสี่ยงเป็นโรคเบาหวานของผู้ป่วย
     """)
+    #ขั้นตอน ML
+    st.write("**ขั้นตอนการทำงานของโมเดล**")
     st.write("""
-    9. **ประเมินผล**
-    - Accuracy Score → คำนวณความแม่นยำของโมเดล
-    - Classification Report → แสดงค่าต่าง ๆ เช่น Precision, Recall, F1-score
+    1. **นำเข้าไลบรารีที่จำเป็น**
+    - **numpy** และ **pandas** ใช้สำหรับการจัดการข้อมูล
+    - **tensorflow** และ **keras** ใช้สำหรับสร้างโมเดลปัญญาประดิษฐ์
+    - **train_test_split** ใช้แบ่งชุดข้อมูลออกเป็น ชุดฝึก (train) และ ชุดทดสอบ (test)
+    - **StandardScaler** ใช้ปรับขนาดข้อมูลให้อยู่ในช่วงที่เหมาะสมสำหรับการฝึกโมเดล
     """)
-    st.image("PhotoML/9.png", use_container_width=True)
-
+    st.image("PhotoNN/1.png", use_container_width=True)
+    st.write("""
+    2. **โหลดและเตรียมข้อมูล**
+    - โหลดไฟล์ diabetes.csv (ควรเปลี่ยน "file_path" เป็นพาธของไฟล์ที่ถูกต้อง)
+    - กำหนดชื่อคอลัมน์ของ DataFrame (df)
+    - df.head() ใช้แสดงข้อมูล 5 แถวแรกเพื่อดูโครงสร้างข้อมูล
+    """)
+    st.image("PhotoNN/2.png", use_container_width=True)
+    st.image("PhotoNN/2.1.png", use_container_width=True)
+    st.write("""
+    3. **โหลดและเตรียมข้อมูลแยกข้อมูลออกเป็นคุณลักษณะ (Features) และผลลัพธ์ (Labels)**
+    - X คือข้อมูลที่ใช้ในการทำนาย (เช่น Glucose, BMI, Age)
+    - y คือผลลัพธ์ที่ต้องการทำนาย (0 = ไม่มีเบาหวาน, 1 = เป็นเบาหวาน)
+    """)
+    st.image("PhotoNN/3.png", use_container_width=True)
+    st.write("""
+    4. **แบ่งข้อมูลเป็นชุดฝึกและชุดทดสอบ**
+    - แบ่งข้อมูลออกเป็น 80% ชุดฝึก และ 20% ชุดทดสอบ
+    - random_state=42 กำหนดค่าให้สุ่มเหมือนเดิมทุกครั้งที่รัน
+    """)
+    st.image("PhotoNN/4.png", use_container_width=True)
+    st.write("""
+    5. **ปรับขนาดข้อมูลให้เหมาะสม**
+    - ใช้ StandardScaler() ปรับขนาดข้อมูลให้อยู่ในช่วงที่เหมาะสมสำหรับโมเดล Neural Network (มีค่าเฉลี่ยเป็น 0 และค่าเบี่ยงเบนมาตรฐานเป็น 1)
+    """)
+    st.image("PhotoNN/5.png", use_container_width=True)
+    st.write("""
+    6. **สร้างโมเดล Neural Network**
+    - ใช้โครงสร้างของ Neural Network 3 ชั้น:
+        - ชั้นแรก (Hidden Layer 1): 16 นิวรอน + relu activation
+        - ชั้นที่สอง (Hidden Layer 2): 8 นิวรอน + relu activation
+        - ชั้นเอาต์พุต (Output Layer): 1 นิวรอน + sigmoid activation (เพราะเป็นปัญหาจำแนกประเภท)
+    """)
+    st.image("PhotoNN/6.png", use_container_width=True)
+    st.write("""
+    7. **คอมไพล์โมเดล**
+    - ใช้ adam optimizer เพื่อปรับค่าพารามิเตอร์ของโมเดล
+    - ใช้ binary_crossentropy เป็น loss function (เหมาะสำหรับปัญหาจำแนกประเภทแบบ 2 class)
+    - ใช้ accuracy เป็นตัววัดผล
+    """)
+    st.image("PhotoNN/7.png", use_container_width=True)
+    st.write("""
+    8. **คอมไพล์โมเดล**
+    - ฝึกโมเดลเป็นเวลา 50 รอบ (epochs)
+    - ใช้ขนาดชุดข้อมูลย่อย (batch size) เท่ากับ 10
+    - ใช้ validation_data=(X_test, y_test) เพื่อตรวจสอบความแม่นยำระหว่างการฝึก
+    """)
+    st.image("PhotoNN/8.png", use_container_width=True)
+    st.image("PhotoNN/8.1.png", use_container_width=True)
+    st.image("PhotoNN/8.2.png", use_container_width=True)
+    st.write("""
+    9. **ประเมินโมเดล**
+    - ใช้ model.evaluate() ประเมินผลลัพธ์กับชุดข้อมูลทดสอบ
+    - แสดงค่าความแม่นยำของโมเดล
+    """)
+    st.image("PhotoNN/9.png", use_container_width=True)
+    st.image("PhotoNN/9.1.png", use_container_width=True)
     
 
 
