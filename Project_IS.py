@@ -254,7 +254,7 @@ columns = ["Pregnancies", "Glucose", "BloodPressure", "SkinThickness", "Insulin"
 df.columns = columns
 df.head()'''
     st.code(code, language="python")
-    st.image("PhotoNN/file&head.png", use_container_width=True)
+    st.image("PhotoNN/filehead.png", use_container_width=True)
     st.write("""
     3. **โหลดและเตรียมข้อมูลแยกข้อมูลออกเป็นคุณลักษณะ (Features) และผลลัพธ์ (Labels)**
     - X คือข้อมูลที่ใช้ในการทำนาย (เช่น Glucose, BMI, Age)
@@ -311,6 +311,7 @@ X_test = scaler.transform(X_test)'''
     code = '''history = model.fit(X_train, y_train, epochs=50, batch_size=10, validation_data=(X_test, y_test))'''
     st.code(code, language="python")
     st.image("PhotoNN/8.1.png", use_container_width=True)
+    st.image("PhotoNN/8.2.png", use_container_width=True)
     st.write("""
     9. **ประเมินโมเดล**
     - ใช้ model.evaluate() ประเมินผลลัพธ์กับชุดข้อมูลทดสอบ
