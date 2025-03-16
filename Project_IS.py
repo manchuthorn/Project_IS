@@ -20,7 +20,7 @@ import pandas as pd
 # หน้าที่ 1: อธิบายการเตรียมข้อมูลและทฤษฎีของอัลกอริธึม
 def data_preparation_and_algorithm_theory():
     st.title("Machine Learning")
-    st.write("ระบุที่มาของ Dataset ", "[Food-101 Nutritional Information](https://www.kaggle.com/datasets/sanadalali/food-101-nutritional-information)")
+    st.write("ที่มาของ Dataset : ", "[Food-101 Nutritional Information](https://www.kaggle.com/datasets/sanadalali/food-101-nutritional-information)")
     st.write("รายละเอียด Features ของ Dataset:")
     st.write("""
     1. **Food Name** (ชื่ออาหาร)
@@ -63,13 +63,26 @@ def data_preparation_and_algorithm_theory():
     - ปริมาณคอเลสเตอรอลในอาหารต่อหนึ่งหน่วย
     - คอเลสเตอรอลมีผลต่อสุขภาพหัวใจและหลอดเลือด หากบริโภคมากเกินไปอาจเพิ่มความเสี่ยงในการเกิดโรคหัวใจ
     """) 
-#เป้าหมายของ ML
-    st.write("**เป้าหมาย**")
+    #ทฤษฎีของอัลกอริทึมที่พัฒนา
+    st.write("**ทฤษฎีของอัลกอริทึม Support Vector Machine (SVM)**")
     st.write("""
-    จุดมุ่งหมายของโมเดลนี้คือการนำ Machine Learning ช่วยเเนะนำโภชนาการ
+    Support Vector Machine (SVM) เป็นอัลกอริทึมที่ใช้สำหรับ Classification (การจำแนกประเภท) และ Regression (การพยากรณ์ค่า) โดยอาศัยแนวคิดของ Hyperplane เพื่อแบ่งข้อมูลออกเป็นกลุ่มที่แตกต่างกัน
+             
+    **หลักการทำงานของ SVM**
+    - SVM สร้างเส้นแบ่งหรือ Hyperplane ที่แยกกลุ่มข้อมูลให้ห่างจากกันมากที่สุด
+    - จุดข้อมูลที่อยู่ใกล้ Hyperplane มากที่สุด เรียกว่า Support Vectors
+    - ใช้ Kernel Trick สำหรับข้อมูลที่ไม่สามารถแยกกันได้ด้วยเส้นตรง
+
+    **💡 จุดเด่นของ SVM**
+    - ✅ ใช้งานได้ดีแม้ข้อมูลมีขนาดเล็ก
+    - ✅ ป้องกัน Overfitting ได้ดี
+    - ✅ ใช้ Kernel Trick ช่วยให้ทำงานกับข้อมูลที่ซับซ้อนได้
+    
+    - ❌ ใช้เวลาประมวลผลนานเมื่อมีข้อมูลเยอะ
+    - ❌ ต้องปรับพารามิเตอร์ (C, gamma) ให้เหมาะสม
     """)
 #ขั้นตอน ML
-    st.write("**ขั้นตอนการทำงานของโมเดล**")
+    st.write("**ขั้นตอนการพัฒนาของโมเดล**")
     st.write("""
     1. **นำเข้าไลบรารีที่จำเป็น**
     - **pandas** และ **numpy** ใช้จัดการข้อมูลในรูปแบบ DataFrame และ Array
@@ -78,72 +91,73 @@ def data_preparation_and_algorithm_theory():
     - **SVC ใช้สร้างโมเดล** Support Vector Machine (SVM)
     - **classification_report** และ **accuracy_score** ใช้ประเมินผลโมเดล
     """)
-    st.image("PhotoML/1.png", use_container_width=True)
+    code = '''
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from sklearn.metrics import classification_report, accuracy_score'''
+    st.code(code, language="python")
     st.write("""
     2. **โหลดชุดข้อมูล**
     - โหลดข้อมูลจากไฟล์ **nutrition.csv**
-    - แสดง 5 แถวแรก **(head())**
-    - แสดงข้อมูลเบื้องต้น **(info())** เช่น จำนวนแถว คอลัมน์ และประเภทข้อมูล
-    - แสดงชื่อคอลัมน์ทั้งหมด **(columns)**
     """)
-    st.image("PhotoML/2.png", use_container_width=True)
+    code = '''nutrition_df = pd.read_csv("nutrition.csv")'''
+    st.code(code, language="python")
     st.write("""
-    3. **แปลง Label เป็นตัวเลข**
-    - คอลัมน์ 'label' เป็นประเภท (Category)
-    - ใช้ .cat.codes เพื่อแปลงเป็นตัวเลข เช่น
-        - Apple → 0
-        - Banana → 1
-        - Carrot → 2
+    3. **เลือก Features และ Target**
+    - features_nutrition: เลือกคอลัมน์ที่ใช้เป็นตัวแปรอิสระ (Features) ได้แก่ โปรตีน, คาร์โบไฮเดรต, ไขมัน ฯลฯ
+    - X_nutrition: เก็บเฉพาะค่าของ Features
+    - y_nutrition: กำหนดให้ตัวแปรตาม (Target) เป็น "calories"
     """)
-    st.image("PhotoML/3.png", use_container_width=True)
+    code = '''
+    features_nutrition = ["calories", "protein", "carbohydrates", "fats", "fiber", "sodium"]
+X_nutrition = nutrition_df[features_nutrition]
+y_nutrition = nutrition_df["calories"]'''
+    st.code(code, language="python")
     st.write("""
-    4. **แยก Features (X) และ Labels (y)**
-    - X คือข้อมูลที่ใช้ในการพยากรณ์ (Features) (ไม่รวม 'label')
-    - y คือค่าที่ต้องการพยากรณ์ (Target Variable)
+    4. **แบ่งชุดข้อมูลเป็นชุดฝึก (Train) และทดสอบ (Test)**
+    - ใช้ train_test_split() เพื่อแบ่งข้อมูลออกเป็น 80% สำหรับการฝึก และ 20% สำหรับการทดสอบ
     """)
-    st.image("PhotoML/4.png", use_container_width=True)
+    code = '''X_train_n, X_test_n, y_train_n, y_test_n = train_test_split(X_nutrition, y_nutrition, test_size=0.2, random_state=42)'''
+    st.code(code, language="python")
     st.write("""
-      **ตรวจสอบข้อมูล**
-    - เช็คค่าที่เป็นไปได้ของ label
-    - ตรวจสอบประเภทข้อมูลทั้งหมด
-    """)
-    st.image("PhotoML/4.1.png", use_container_width=True)
-    st.write("""
-    5. **แบ่งข้อมูลเป็น Training และ Test Set**
-    - แบ่งข้อมูล 80% เป็น Training Set และ 20% เป็น Test Set
-    - random_state=42 ทำให้ได้ผลลัพธ์เดิมทุกครั้ง
-    """)
-    st.image("PhotoML/5.png", use_container_width=True)
-    st.write("""
-    6. **ปรับมาตรฐานข้อมูล (Feature Scaling)**
+    5. **ปรับมาตรฐานข้อมูล (Feature Scaling)**
     - ใช้ StandardScaler เพื่อปรับค่าคุณลักษณะ (Features) ให้มีค่าเฉลี่ย = 0 และค่าความแปรปรวน = 1
     - ช่วยให้โมเดลทำงานได้ดีขึ้น
+    - ใช้ X_test เพื่อให้โมเดลพยากรณ์ค่า y
     """)
-    st.image("PhotoML/6.png", use_container_width=True)
+    code = '''
+    scaler_n = StandardScaler()
+X_train_n = scaler_n.fit_transform(X_train_n)
+X_test_n = scaler_n.transform(X_test_n)'''
+    st.code(code, language="python")
     st.write("""
-    7. **สร้างและฝึกโมเดล SVM**
+    6. **สร้างและฝึกโมเดล SVM**
     - ใช้ Support Vector Classifier (SVC)
     - kernel='linear' → ใช้เส้นแบ่งแบบ Linear
     - C=1 → ควบคุมความเข้มงวดของขอบเขตการจำแนก
     - fit(X_train, y_train) → ฝึกโมเดลด้วย Training Data
     """)
-    st.image("PhotoML/7.png", use_container_width=True)
+    code = '''model_n = LogisticRegression()
+model_n.fit(X_train_n, y_train_n)'''
+    st.code(code, language="python")
     st.write("""
-    8. **ทดสอบโมเดล**
-    - ใช้ X_test เพื่อให้โมเดลพยากรณ์ค่า y
-    """)
-    st.image("PhotoML/8.png", use_container_width=True)
-    st.write("""
-    9. **ประเมินผล**
+    7. **ประเมินผล**
     - Accuracy Score → คำนวณความแม่นยำของโมเดล
     - Classification Report → แสดงค่าต่าง ๆ เช่น Precision, Recall, F1-score
     """)
-    st.image("PhotoML/9.png", use_container_width=True)
+    code = '''y_pred = svm_model.predict(X_test)
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Classification Report:\n", classification_report(y_test, y_pred))'''
+    st.code(code, language="python")
+    st.image("PhotoML/accuracy.png", use_container_width=True)
 
 # หน้าที่ 2: อธิบายการพัฒนาโมเดล Machine Learning และ Neural Networks
 def model_development():
     st.title("Neural Networks")
-    st.write("ระบุที่มาของ Dataset ", "[Kaggle Pima Indians Diabetes Database](https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database)")
+    st.write("ที่มาของ Dataset : ", "[Kaggle Pima Indians Diabetes Database](https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database)")
     st.write("รายละเอียด Features ของ Dataset:")
     st.write("""
     1. **Pregnancies** (จำนวนการตั้งครรภ์)
@@ -183,13 +197,29 @@ def model_development():
     - 0 = ไม่เป็นโรคเบาหวาน
     - 1 = เป็นโรคเบาหวาน
     """)
-    #เป้าหมายของ NN
-    st.write("**เป้าหมาย**")
+    #ทฤษฎีของอัลกอริทึมที่พัฒนา
+    st.write("**ทฤษฎีของอัลกอริทึม MLP (Multilayer Perceptron)**")
     st.write("""
-    จุดมุ่งหมายของโมเดลนี้คือการนำ Neural Network พยากรความเสี่ยงเป็นโรคเบาหวานของผู้ป่วย
+    Multilayer Perceptron (MLP) เป็นประเภทของ Artificial Neural Network (ANN) ที่ประกอบด้วย หลายชั้น (Layers) ของนิวรอน (Neurons) ซึ่งสามารถเรียนรู้และจำแนกข้อมูลที่ซับซ้อนขึ้นกว่าระบบ Perceptron แบบธรรมดา
+             
+    Multilayer Perceptron (MLP) เป็นโมเดลที่ใช้โครงข่ายประสาทเทียม (Artificial Neural Network) โดยมีโครงสร้างดังนี้:
+
+    - Input Layer (ชั้นนำเข้า) → รับค่าตัวแปร (Features) เช่น Glucose, Blood Pressure, BMI, Age ฯลฯ
+    - Hidden Layers (ชั้นซ่อน) → ประมวลผลข้อมูลผ่าน Activation Function (เช่น ReLU, Sigmoid)
+    - Output Layer (ชั้นส่งออก) → แสดงผลลัพธ์เป็น 0 = ไม่เป็นเบาหวาน หรือ 1 = เป็นเบาหวาน
+             
+    📌 เป้าหมายของโมเดล คือเรียนรู้จากข้อมูลสุขภาพของผู้ป่วยและคาดการณ์ว่าพวกเขาจะเป็นเบาหวานหรือไม่
+
+    **💡 จุดเด่นของ MLP**
+    - ✅ รองรับการเรียนรู้แบบไม่เป็นเส้นตรง (Non-linearity)
+    - ✅ เรียนรู้ความซับซ้อนของข้อมูลได้ดี
+    - ✅ ใช้ Backpropagation ในการปรับปรุงโมเดล
+    - ✅ ใช้ได้ทั้ง Classification และ Regression
+    
+    MLP เหมาะกับการนำไปใช้วิเคราะห์ข้อมูลสุขภาพ เช่น Pima Indians Diabetes Dataset เพื่อช่วยคัดกรองผู้ป่วยเบาหวานได้อย่างมีประสิทธิภาพ 
     """)
-    #ขั้นตอน ML
-    st.write("**ขั้นตอนการทำงานของโมเดล**")
+    #ขั้นตอน NN
+    st.write("**ขั้นตอนการพัฒนาของโมเดล**")
     st.write("""
     1. **นำเข้าไลบรารีที่จำเป็น**
     - **numpy** และ **pandas** ใช้สำหรับการจัดการข้อมูล
@@ -197,32 +227,60 @@ def model_development():
     - **train_test_split** ใช้แบ่งชุดข้อมูลออกเป็น ชุดฝึก (train) และ ชุดทดสอบ (test)
     - **StandardScaler** ใช้ปรับขนาดข้อมูลให้อยู่ในช่วงที่เหมาะสมสำหรับการฝึกโมเดล
     """)
-    st.image("PhotoNN/1.png", use_container_width=True)
+    code = '''
+    import numpy as np  
+import pandas as pd  
+import tensorflow as tf  
+from tensorflow import keras  
+from sklearn.model_selection import train_test_split  
+from sklearn.preprocessing import StandardScaler  '''
+    st.code(code, language="python")
     st.write("""
     2. **โหลดและเตรียมข้อมูล**
-    - โหลดไฟล์ diabetes.csv (ควรเปลี่ยน "file_path" เป็นพาธของไฟล์ที่ถูกต้อง)
+    - โหลดไฟล์ diabetes.csv 
     - กำหนดชื่อคอลัมน์ของ DataFrame (df)
     - df.head() ใช้แสดงข้อมูล 5 แถวแรกเพื่อดูโครงสร้างข้อมูล
     """)
-    st.image("PhotoNN/2.png", use_container_width=True)
-    st.image("PhotoNN/2.1.png", use_container_width=True)
+    code = '''
+    from google.colab import files'''
+    st.code(code, language="python")
+
+    code = '''
+    uploaded = files.upload()
+file_path = "diabetes.csv"
+df = pd.read_csv(file_path)
+
+columns = ["Pregnancies", "Glucose", "BloodPressure", "SkinThickness", "Insulin", "BMI", "DiabetesPedigreeFunction", "Age", "Outcome"]  
+df.columns = columns
+df.head()'''
+    st.code(code, language="python")
+    st.image("PhotoNN/file&head.png", use_container_width=True)
     st.write("""
     3. **โหลดและเตรียมข้อมูลแยกข้อมูลออกเป็นคุณลักษณะ (Features) และผลลัพธ์ (Labels)**
     - X คือข้อมูลที่ใช้ในการทำนาย (เช่น Glucose, BMI, Age)
     - y คือผลลัพธ์ที่ต้องการทำนาย (0 = ไม่มีเบาหวาน, 1 = เป็นเบาหวาน)
     """)
-    st.image("PhotoNN/3.png", use_container_width=True)
+    code = '''
+    X = df.drop(columns=["Outcome"])
+y = df["Outcome"]'''
+    st.code(code, language="python")
     st.write("""
     4. **แบ่งข้อมูลเป็นชุดฝึกและชุดทดสอบ**
     - แบ่งข้อมูลออกเป็น 80% ชุดฝึก และ 20% ชุดทดสอบ
     - random_state=42 กำหนดค่าให้สุ่มเหมือนเดิมทุกครั้งที่รัน
     """)
-    st.image("PhotoNN/4.png", use_container_width=True)
+    code = '''
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)'''
+    st.code(code, language="python")
     st.write("""
     5. **ปรับขนาดข้อมูลให้เหมาะสม**
     - ใช้ StandardScaler() ปรับขนาดข้อมูลให้อยู่ในช่วงที่เหมาะสมสำหรับโมเดล Neural Network (มีค่าเฉลี่ยเป็น 0 และค่าเบี่ยงเบนมาตรฐานเป็น 1)
     """)
-    st.image("PhotoNN/5.png", use_container_width=True)
+    code = '''
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)'''
+    st.code(code, language="python")
     st.write("""
     6. **สร้างโมเดล Neural Network**
     - ใช้โครงสร้างของ Neural Network 3 ชั้น:
@@ -230,34 +288,42 @@ def model_development():
         - ชั้นที่สอง (Hidden Layer 2): 8 นิวรอน + relu activation
         - ชั้นเอาต์พุต (Output Layer): 1 นิวรอน + sigmoid activation (เพราะเป็นปัญหาจำแนกประเภท)
     """)
-    st.image("PhotoNN/6.png", use_container_width=True)
+    code = '''model = keras.Sequential([
+    keras.layers.Dense(16, activation='relu', input_shape=(X_train.shape[1],)), 
+    keras.layers.Dense(8, activation='relu'), 
+    keras.layers.Dense(1, activation='sigmoid')  
+])'''
+    st.code(code, language="python")
     st.write("""
     7. **คอมไพล์โมเดล**
     - ใช้ adam optimizer เพื่อปรับค่าพารามิเตอร์ของโมเดล
     - ใช้ binary_crossentropy เป็น loss function (เหมาะสำหรับปัญหาจำแนกประเภทแบบ 2 class)
     - ใช้ accuracy เป็นตัววัดผล
     """)
-    st.image("PhotoNN/7.png", use_container_width=True)
+    code = '''model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])'''
+    st.code(code, language="python")
     st.write("""
     8. **คอมไพล์โมเดล**
     - ฝึกโมเดลเป็นเวลา 50 รอบ (epochs)
     - ใช้ขนาดชุดข้อมูลย่อย (batch size) เท่ากับ 10
     - ใช้ validation_data=(X_test, y_test) เพื่อตรวจสอบความแม่นยำระหว่างการฝึก
     """)
-    st.image("PhotoNN/8.png", use_container_width=True)
+    code = '''history = model.fit(X_train, y_train, epochs=50, batch_size=10, validation_data=(X_test, y_test))'''
+    st.code(code, language="python")
     st.image("PhotoNN/8.1.png", use_container_width=True)
-    st.image("PhotoNN/8.2.png", use_container_width=True)
     st.write("""
     9. **ประเมินโมเดล**
     - ใช้ model.evaluate() ประเมินผลลัพธ์กับชุดข้อมูลทดสอบ
     - แสดงค่าความแม่นยำของโมเดล
     """)
-    st.image("PhotoNN/9.png", use_container_width=True)
+    code = '''loss, accuracy = model.evaluate(X_test, y_test)
+print(f"Test Accuracy: {accuracy * 100:.2f}%")'''
+    st.code(code, language="python")
     st.image("PhotoNN/9.1.png", use_container_width=True)
     
 
 
-# หน้าที่ 3: Demo การทำงานของโมเดล Machine Learning
+# หน้าที่ 4
 # โหลดข้อมูลสำหรับการพยากรณ์โรคเบาหวาน
 diabetes_df = pd.read_csv("diabetes.csv")
 features_diabetes = ["Glucose", "BloodPressure", "BMI", "Age"]
@@ -270,12 +336,13 @@ X_test_d = scaler_d.transform(X_test_d)
 model_d = LogisticRegression()
 model_d.fit(X_train_d, y_train_d)
 
-
+# หน้าที่ 3
 # โหลดข้อมูลโภชนาการ
 nutrition_df = pd.read_csv("nutrition.csv")
 features_nutrition = ["calories", "protein", "carbohydrates", "fats", "fiber", "sodium"]
 X_nutrition = nutrition_df[features_nutrition]
 y_nutrition = nutrition_df["calories"]
+X_train_n, X_test_n, y_train_n, y_test_n = train_test_split(X_nutrition, y_nutrition, test_size=0.2, random_state=42)
 X_train_n, X_test_n, y_train_n, y_test_n = train_test_split(X_nutrition, y_nutrition, test_size=0.2, random_state=42)
 scaler_n = StandardScaler()
 X_train_n = scaler_n.fit_transform(X_train_n)
@@ -285,8 +352,8 @@ model_n.fit(X_train_n, y_train_n)
 
 
 # UI Streamlit
-st.sidebar.title("Project IS")
-page = st.sidebar.radio("ไปยังหน้า:", ["Machine Learning", "Neural Network", "Demo Machine Learning", "Demo Neural Network"])
+st.sidebar.title("Project Intelligent System")
+page = st.sidebar.selectbox("ไปยังหน้า:", ["Machine Learning", "Neural Network", "Demo Machine Learning", "Demo Neural Network"])
 
 if page == "Machine Learning":
     data_preparation_and_algorithm_theory()
